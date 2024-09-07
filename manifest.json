@@ -1,0 +1,21 @@
+{
+    "manifest_version": 3,
+    "name": "inFilter",
+    "version": "1.0",
+    "description": "Filter out unwanted posts from Linkedin feed",
+    "permissions": [
+      "storage"
+    ],
+    "host_permissions": [
+    "*://*.linkedin.com/feed/"
+  ],
+    "action": {
+      "default_popup": "popup.html"
+    },
+    "content_scripts": [
+      {
+        "matches": ["*://*.linkedin.com/feed/"],
+        "js": ["content.js"]
+      }
+    ]
+  }

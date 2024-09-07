@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>inFilter</title>
+  <style>
+    body { width: 300px; padding: 10px; font-family: Consolas; }
+    a {color: rgb(19, 159, 206);}
+    h2 { margin-top: 0;}
+    label { display: block; margin-top: 10px; margin-bottom: 3px; font-weight: bold;}
+    textarea { width: 100%; height: 140px; margin-bottom: 10px; }
+    button { width: 100%; padding: 5px; margin-top: 10px; }
+    #status { margin-top: 10px; color: green; }
+    .checkbox-label { font-weight: normal; }
+  </style>
+</head>
+<body>
+  <h2><a href="#">inFilter</a></h2>
+  
+  <label for="interactor">Blocked keywords in post header:</label>
+  <textarea id="interactor" placeholder="Enter one keyword per line e.g.,&#10promoted&#10celebrates this&#10recommended"></textarea>
+
+  <label for="content">Blocked keywords in post content:</label>
+  <textarea id="content" placeholder="Enter one keyword per line e.g.,&#10linkedin family&#10thrilled&#10agree?"></textarea>
+
+  <button id="saveKeywords">Save Changes</button>
+  <div id="status"></div>
+
+  
+  <script src="popup.js"></script>
+</body>
+</html>
