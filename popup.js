@@ -1,20 +1,20 @@
 document.addEventListener('DOMContentLoaded', function() {
     const contentTextarea = document.getElementById('content');
-    const interactorTextarea = document.getElementById('interactor');
+    const headerTextarea = document.getElementById('header');
     const saveButton = document.getElementById('saveKeywords');
     const statusDiv = document.getElementById('status');
   
     // Load saved settings
-    chrome.storage.sync.get(['content', 'interactor'], function(data) {
+    chrome.storage.sync.get(['content', 'header'], function(data) {
         contentTextarea.value = (data.content || []).join('\n');
-        interactorTextarea.value = (data.interactor || []).join('\n');
+        headerTextarea.value = (data.header || []).join('\n');
     });
   
     // Save settings
     saveButton.addEventListener('click', function() {
         let settings = {
             content: contentTextarea.value.split('\n').filter(k => k.trim() !== ''),
-            interactor: interactorTextarea.value.split('\n').filter(k => k.trim() !== ''),
+            header: headerTextarea.value.split('\n').filter(k => k.trim() !== ''),
         };
         chrome.storage.sync.set(settings, function() {
             statusDiv.textContent = 'Settings saved!';
@@ -29,3 +29,10 @@ document.addEventListener('DOMContentLoaded', function() {
       });
     });
   });
+
+  // Open links
+  document.getElementById('github').addEventListener('click', function(e) {
+    e.preventDefault(); // Prevent default action
+    chrome.tabs.create({ url: this.href }); // Open link in new tab
+  });
+  

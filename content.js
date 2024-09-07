@@ -2,18 +2,18 @@
 const SELECTORS = {
     post: 'div:has(> div#fie-impression-container)',
     content: 'div.feed-shared-update-v2__description-wrapper',
-    interactor: 'div.relative'
+    header: 'div.relative'
 };
 
 // Check if post meets removal criteria
 function checkPost(post, keywords) {
     const contentWrapper = post.querySelector(SELECTORS.content);
-    const interactor = post.querySelector(SELECTORS.interactor);
+    const header = post.querySelector(SELECTORS.header);
   
     if (contentWrapper && keywords.content.some(keyword => contentWrapper.textContent.toLowerCase().includes(keyword.toLowerCase()))) {
         return true;
     }
-    if (interactor && keywords.interactor.some(keyword => interactor.textContent.toLowerCase().includes(keyword.toLowerCase()))) {
+    if (header && keywords.header.some(keyword => header.textContent.toLowerCase().includes(keyword.toLowerCase()))) {
         return true;
     }
   
@@ -22,10 +22,10 @@ function checkPost(post, keywords) {
 
 // Remove all posts returning true checkPost()
 function removePosts() {
-    chrome.storage.sync.get(['content', 'interactor'], function(data) {
+    chrome.storage.sync.get(['content', 'header'], function(data) {
         const keywords = {
             content: data.content || [],
-            interactor: data.interactor || []
+            header: data.header || []
         };
         const posts = document.querySelectorAll(SELECTORS.post);
         posts.forEach(post => {
