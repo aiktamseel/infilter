@@ -1,8 +1,12 @@
 {
     "manifest_version": 3,
     "name": "inFilter",
-    "version": "1.0",
-    "description": "Filter out unwanted posts from Linkedin feed",
+    "version": "1.1",
+    "icons": {
+      "48": "infilter-48.png",
+      "128": "infilter-128.png"
+    },
+    "description": "Remove ads from linkedin feed and block posts with certain keywords.",
     "permissions": [
       "storage"
     ],
