@@ -1,59 +1,74 @@
+let observer;
+let keywords = [];
+
 // Set element selectors
 const SELECTORS = {
     post: 'div:has(> div#fie-impression-container)',
     content: 'div.feed-shared-update-v2__description-wrapper',
-    header: 'div.relative'
+    header: 'div.relative',
+    feed: 'main.scaffold-layout__main > div.relative'
 };
 
 // Check if post meets removal criteria
-function checkPost(post, keywords) {
+function checkPost(post) {
     const contentWrapper = post.querySelector(SELECTORS.content);
     const header = post.querySelector(SELECTORS.header);
-  
-    if (contentWrapper && keywords.content.some(keyword => contentWrapper.textContent.toLowerCase().includes(keyword.toLowerCase()))) {
+    // Detect promoted posts
+    if (header && header.textContent.includes("Promoted")) {
+        console.log("inFilter: Promoted post removed");
         return true;
     }
-    if (header && keywords.header.some(keyword => header.textContent.toLowerCase().includes(keyword.toLowerCase()))) {
+    // Detect posts with blocked keywords
+    if (contentWrapper && keywords.some(keyword => contentWrapper.textContent.toLowerCase().includes(keyword))) {
+        console.log("inFilter: Blocked post removed");
         return true;
     }
   
     return false;
 }
 
-// Remove all posts returning true checkPost()
+// Dynamically remove all posts returning true checkPost()
 function removePosts() {
-    chrome.storage.sync.get(['content', 'header'], function(data) {
-        const keywords = {
-            content: data.content || [],
-            header: data.header || []
-        };
+    chrome.storage.sync.get(['keywords'], function(data) {
+        keywords = (data.keywords || []).map(str => str.toLowerCase());
+
+        // Remove already loaded posts
         const posts = document.querySelectorAll(SELECTORS.post);
         posts.forEach(post => {
-            if (checkPost(post, keywords)) {
+            if (checkPost(post)) {
             post.remove();
             }
         });
+
+        // Create observer for new posts if not exists
+        if (observer) {
+            return;
+        }
+        observer = new MutationObserver(mutations => {
+            mutations.forEach(mutation => {
+                mutation.addedNodes.forEach(node => {
+                    if (node.nodeType === Node.ELEMENT_NODE && node.matches(SELECTORS.post)) {
+                        if (checkPost(node, keywords)) {
+                            node.remove();
+                        }
+                    }
+                });
+            });
+        });
+        
+        // Start observer
+        const config = { childList: true, subtree: true };
+        observer.observe(document.querySelector(SELECTORS.feed), config);
     });
 }
-  
-// Initial removal
-removePosts();
-  
-// Set up a MutationObserver to watch for new posts
-const observer = new MutationObserver(function(mutations) {
-    mutations.forEach(function(mutation) {
-        if (mutation.type === 'childList') {
-            removePosts();
-      }
-    });
-  });
-  
-// Start observing the document with the configured parameters
-observer.observe(document.body, { childList: true, subtree: true });
-  
-// Remove posts when message received from the popup script
+   
+// Remove posts with new keywords when user changes keywords
 chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
     if (request.action === "removePosts") {
         removePosts();
     }
   });
+
+
+// Run main post removal script
+removePosts();
