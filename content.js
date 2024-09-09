@@ -9,11 +9,13 @@ const SELECTORS = {
 function checkPost(post, keywords) {
     const contentWrapper = post.querySelector(SELECTORS.content);
     const header = post.querySelector(SELECTORS.header);
-  
-    if (contentWrapper && keywords.content.some(keyword => contentWrapper.textContent.toLowerCase().includes(keyword.toLowerCase()))) {
+ 
+    if (header && header.textContent.includes("Promoted")) {
+        console.log("Promoted post removed");
         return true;
     }
-    if (header && keywords.header.some(keyword => header.textContent.toLowerCase().includes(keyword.toLowerCase()))) {
+    if (contentWrapper && keywords.some(keyword => contentWrapper.textContent.toLowerCase().includes(keyword.toLowerCase()))) {
+        console.log("Blocked post removed");
         return true;
     }
   
@@ -22,11 +24,8 @@ function checkPost(post, keywords) {
 
 // Remove all posts returning true checkPost()
 function removePosts() {
-    chrome.storage.sync.get(['content', 'header'], function(data) {
-        const keywords = {
-            content: data.content || [],
-            header: data.header || []
-        };
+    chrome.storage.sync.get(['keywords'], function(data) {
+        const keywords = data.keywords || [];
         const posts = document.querySelectorAll(SELECTORS.post);
         posts.forEach(post => {
             if (checkPost(post, keywords)) {

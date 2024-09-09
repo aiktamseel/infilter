@@ -1,20 +1,17 @@
 document.addEventListener('DOMContentLoaded', function() {
-    const contentTextarea = document.getElementById('content');
-    const headerTextarea = document.getElementById('header');
+    const keywordsTextarea = document.getElementById('keywords');
     const saveButton = document.getElementById('saveKeywords');
     const statusDiv = document.getElementById('status');
   
     // Load saved settings
-    chrome.storage.sync.get(['content', 'header'], function(data) {
-        contentTextarea.value = (data.content || []).join('\n');
-        headerTextarea.value = (data.header || []).join('\n');
+    chrome.storage.sync.get(['keywords'], function(data) {
+        keywordsTextarea.value = (data.keywords || []).join('\n');
     });
   
     // Save settings
     saveButton.addEventListener('click', function() {
         let settings = {
-            content: contentTextarea.value.split('\n').filter(k => k.trim() !== ''),
-            header: headerTextarea.value.split('\n').filter(k => k.trim() !== ''),
+            keywords: keywordsTextarea.value.split('\n').filter(k => k.trim() !== ''),
         };
         chrome.storage.sync.set(settings, function() {
             statusDiv.textContent = 'Settings saved!';
