@@ -5,7 +5,8 @@ let keywords = [];
 const SELECTORS = {
     post: 'div:has(> div#fie-impression-container)',
     content: 'div.feed-shared-update-v2__description-wrapper',
-    header: 'div.relative'
+    header: 'div.relative',
+    feed: 'main.scaffold-layout__main > div.relative'
 };
 
 // Check if post meets removal criteria
@@ -57,7 +58,7 @@ function removePosts() {
         
         // Start observer
         const config = { childList: true, subtree: true };
-        observer.observe(document.body, config);
+        observer.observe(document.querySelector(SELECTORS.feed), config);
     });
 }
    
