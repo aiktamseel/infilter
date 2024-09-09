@@ -19,7 +19,7 @@ function checkPost(post) {
         return true;
     }
     // Detect posts with blocked keywords
-    if (contentWrapper && keywords.some(keyword => contentWrapper.textContent.toLowerCase().includes(keyword.toLowerCase()))) {
+    if (contentWrapper && keywords.some(keyword => contentWrapper.textContent.toLowerCase().includes(keyword))) {
         console.log("inFilter: Blocked post removed");
         return true;
     }
@@ -30,7 +30,7 @@ function checkPost(post) {
 // Dynamically remove all posts returning true checkPost()
 function removePosts() {
     chrome.storage.sync.get(['keywords'], function(data) {
-        keywords = data.keywords || [];
+        keywords = (data.keywords || []).map(str => str.toLowerCase());
 
         // Remove already loaded posts
         const posts = document.querySelectorAll(SELECTORS.post);
