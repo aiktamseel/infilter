@@ -1,5 +1,6 @@
 let observer;
 let keywords = [];
+let headerKeywords = ['Promoted', 'ecommended for you']
 
 // Set element selectors
 const SELECTORS = {
@@ -13,13 +14,13 @@ const SELECTORS = {
 function checkPost(post) {
     const contentWrapper = post.querySelector(SELECTORS.content);
     const header = post.querySelector(SELECTORS.header);
-    // Detect promoted posts
-    if (header && header.textContent.includes("Promoted")) {
-        console.log("inFilter: Promoted post removed");
+    // Detect promoted/ recommended for you/ suggested posts
+    if (header && headerKeywords.some(str => header.textContent.includes(str))) {
+        console.log(header);
         return true;
     }
     // Detect posts with blocked keywords
-    if (contentWrapper && keywords.some(keyword => contentWrapper.textContent.toLowerCase().includes(keyword))) {
+    if (contentWrapper && keywords.some(str => contentWrapper.textContent.toLowerCase().includes(str))) {
         console.log("inFilter: Blocked post removed");
         return true;
     }
