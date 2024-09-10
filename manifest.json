@@ -6,7 +6,7 @@
       "48": "icon48.png",
       "128": "icon128.png"
     },
-    "description": "Remove ads from linkedin feed and block posts with certain keywords.",
+    "description": "Block ads and remove posts with specified keywords from your LinkedIn feed.",
     "permissions": [
       "storage"
     ],
