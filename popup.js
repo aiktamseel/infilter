@@ -25,13 +25,13 @@ document.addEventListener('DOMContentLoaded', function() {
   
       });
     });
+
+    // Open links
+    document.querySelectorAll('a').forEach(function(link) {
+      link.addEventListener('click', function(e) {
+        e.preventDefault(); // Prevent default action
+        chrome.tabs.create({ url: this.href }); // Open link in new tab
+      });
+    });  
   });
 
-  // Open links
-  document.querySelectorAll('a').forEach(function(link) {
-    link.addEventListener('click', function(e) {
-      e.preventDefault(); // Prevent default action
-      chrome.tabs.create({ url: this.href }); // Open link in new tab
-    });
-  });  
-  
