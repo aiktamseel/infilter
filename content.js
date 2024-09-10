@@ -16,7 +16,7 @@ function checkPost(post) {
     const header = post.querySelector(SELECTORS.header);
     // Detect promoted/ recommended for you/ suggested posts
     if (header && headerKeywords.some(str => header.textContent.includes(str))) {
-        console.log(header);
+        console.log("inFilter: Promoted post removed");
         return true;
     }
     // Detect posts with blocked keywords

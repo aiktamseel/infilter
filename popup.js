@@ -14,7 +14,7 @@ document.addEventListener('DOMContentLoaded', function() {
             keywords: keywordsTextarea.value.split('\n').filter(k => k.trim() !== ''),
         };
         chrome.storage.sync.set(settings, function() {
-            statusDiv.textContent = 'Settings saved!';
+            statusDiv.textContent = 'Changes saved!';
             setTimeout(() => { statusDiv.textContent = ''; }, 2000);
 
         // Send removePosts message
@@ -28,8 +28,10 @@ document.addEventListener('DOMContentLoaded', function() {
   });
 
   // Open links
-  document.getElementById('github').addEventListener('click', function(e) {
-    e.preventDefault(); // Prevent default action
-    chrome.tabs.create({ url: this.href }); // Open link in new tab
-  });
+  document.querySelectorAll('a').forEach(function(link) {
+    link.addEventListener('click', function(e) {
+      e.preventDefault(); // Prevent default action
+      chrome.tabs.create({ url: this.href }); // Open link in new tab
+    });
+  });  
   
