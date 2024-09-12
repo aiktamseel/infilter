@@ -1,6 +1,7 @@
 let observer;
 let keywords = [];
 let headerKeywords = ['Promoted', 'ecommended for you', 'follows', 'follow ']
+let removeSuggested;
 
 // Set element selectors
 const SELECTORS = {
@@ -16,12 +17,17 @@ function checkPost(post) {
     const header = post.querySelector(SELECTORS.header);
     // Detect promoted/ recommended for you/ suggested posts
     if (header && headerKeywords.some(str => header.textContent.includes(str))) {
-        console.log("inFilter: Promoted post removed");
+        console.log("inFilter: Promoted Post removed");
+        return true;
+    }
+    // Detect suggested posts if opted for
+    if (removeSuggested && header && header.textContent.includes('Suggested')) {
+        console.log("inFilter: Suggested Post removed");
         return true;
     }
     // Detect posts with blocked keywords
     if (contentWrapper && keywords.some(str => contentWrapper.textContent.toLowerCase().includes(str))) {
-        console.log("inFilter: Blocked post removed");
+        console.log("inFilter: Blocked-keyword Post removed");
         return true;
     }
 
@@ -30,17 +36,12 @@ function checkPost(post) {
 
 // Dynamically remove all posts returning true checkPost()
 function removePosts() {
+    console.log("inFilter: Check all posts")
     chrome.storage.sync.get(['keywords', 'removeSuggested'], function(data) {
         keywords = (data.keywords || []).map(str => str.toLowerCase());
 
-        // Add/Remove 'Suggested' from headerKeywords depending on settings...
-        // and whether already present in array or not
-        let indexSuggested = headerKeywords.indexOf('Suggested');
-        if (indexSuggested == -1 && data.removeSuggested) {
-            headerKeywords.push('Suggested');
-        } else if (indexSuggested > -1 && !data.removeSuggested) {
-            headerKeywords.splice(indexSuggested, 1);
-        }
+        // Set removeSuggested var based on settings
+        removeSuggested = data.removeSuggested;
 
         // Remove already loaded posts
         const posts = document.querySelectorAll(SELECTORS.post);
@@ -78,7 +79,7 @@ removePosts()
 
 // Re-run main function when message received
 chrome.runtime.onMessage.addListener((message) => {
-    if (message.action === "removePosts") {
+    if (message.action === 'removePosts') {
         removePosts();
     }
 });
