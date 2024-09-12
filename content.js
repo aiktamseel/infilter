@@ -24,7 +24,7 @@ function checkPost(post) {
         console.log("inFilter: Blocked post removed");
         return true;
     }
-  
+
     return false;
 }
 
@@ -43,7 +43,7 @@ function removePosts() {
 
         // Create observer for new posts if not exists
         if (observer) {
-            return;
+            observer.disconnect();
         }
         observer = new MutationObserver(mutations => {
             mutations.forEach(mutation => {
@@ -63,13 +63,10 @@ function removePosts() {
     });
 }
    
-// Remove posts with new keywords when user changes keywords
-chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
-    if (request.action === "removePosts") {
+// Run main script when message received
+// (message received when linkedin feed page opens or keywords saved)
+chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+    if (message.action === "removePosts") {
         removePosts();
     }
 });
-
-
-// Run main post removal script
-removePosts();

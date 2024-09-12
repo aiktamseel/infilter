@@ -22,7 +22,6 @@ document.addEventListener('DOMContentLoaded', function() {
             var activeTab = tabs[0];
             chrome.tabs.sendMessage(activeTab.id, { action: "removePosts" });
         });
-  
       });
     });
 
