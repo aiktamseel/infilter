@@ -1,9 +1,7 @@
 # inFilter
 Block ads and remove posts with certain keywords from your **Linkedin feed**.  
-Install from Chrome Web Store:  
-<a href="https://chromewebstore.google.com/detail/infilter/lmlhegmkjkkeigpmgfgbdfdgpcocapeg">
-  <img src="https://storage.googleapis.com/web-dev-uploads/image/WlD8wC6g8khYWPJUsQceQkhXSlv1/UV4C4ybeBTsZt43U4xis.png" alt="Image description" style="margin: 10px 0 0; max-height: 3em;">
-</a>
+**[Install](https://chromewebstore.google.com/detail/infilter/lmlhegmkjkkeigpmgfgbdfdgpcocapeg) from Chrome Web Store** *(Recommended)*.
+
 
 ## Features
 - Auto remove *Promoted Posts*

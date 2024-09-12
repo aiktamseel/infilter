@@ -71,10 +71,13 @@ function removePosts() {
         observer.observe(document.querySelector(SELECTORS.feed), config);
     });
 }
-   
-// Run main script when message received
-// (message received when linkedin feed page opens or keywords saved)
-chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+
+
+// Run main post check and remove function
+removePosts()
+
+// Re-run main function when message received
+chrome.runtime.onMessage.addListener((message) => {
     if (message.action === "removePosts") {
         removePosts();
     }
