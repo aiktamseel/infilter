@@ -1,6 +1,6 @@
 let observer;
 let keywords = [];
-let headerKeywords = ['Promoted', 'ecommended for you', 'follow']
+let headerKeywords = ['Promoted', 'ecommended for you', 'follows', 'follow ']
 
 // Set element selectors
 const SELECTORS = {
