@@ -26,9 +26,8 @@
       font-weight: inherit;
       cursor: pointer;
     }
-    button { padding: 5px; margin-top: 10px; font-family: inherit }
+    button { padding: 5px; margin-top: 25px; font-family: inherit }
     #status { font-size: 0.9em; margin-left: 0.8em; color: green; }
-    .checkbox-label { font-weight: normal; }
   </style>
 </head>
 <body>
@@ -41,6 +40,10 @@
 
   <label for="keywords">Blocked keywords:</label>
   <textarea id="keywords" placeholder="Enter one keyword per line, e.g.,&#10linkedin family&#10thrilled&#10agree?"></textarea>
+
+  <label>
+    <input type="checkbox" id="removeSuggested"> Remove suggested posts
+  </label>
 
   <button id="saveKeywords">Save Changes</button>
   <span id="status"></span>

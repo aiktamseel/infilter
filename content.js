@@ -30,8 +30,17 @@ function checkPost(post) {
 
 // Dynamically remove all posts returning true checkPost()
 function removePosts() {
-    chrome.storage.sync.get(['keywords'], function(data) {
+    chrome.storage.sync.get(['keywords', 'removeSuggested'], function(data) {
         keywords = (data.keywords || []).map(str => str.toLowerCase());
+
+        // Add/Remove 'Suggested' from headerKeywords depending on settings...
+        // and whether already present in array or not
+        let indexSuggested = headerKeywords.indexOf('Suggested');
+        if (indexSuggested == -1 && data.removeSuggested) {
+            headerKeywords.push('Suggested');
+        } else if (indexSuggested > -1 && !data.removeSuggested) {
+            headerKeywords.splice(indexSuggested, 1);
+        }
 
         // Remove already loaded posts
         const posts = document.querySelectorAll(SELECTORS.post);

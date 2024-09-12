@@ -1,18 +1,21 @@
 document.addEventListener('DOMContentLoaded', function() {
     const keywordsTextarea = document.getElementById('keywords');
+    const removeSuggestedCheckbox = document.getElementById('removeSuggested');
     const saveButton = document.getElementById('saveKeywords');
     const statusDiv = document.getElementById('status');
   
     // Load saved settings
-    chrome.storage.sync.get(['keywords'], function(data) {
+    chrome.storage.sync.get(['keywords', 'removeSuggested'], function(data) {
         keywordsTextarea.value = (data.keywords || []).join('\n');
+        removeSuggestedCheckbox.checked = data.removeSuggested || false;
     });
   
     // Save settings
     saveButton.addEventListener('click', function() {
         let settings = {
             keywords: keywordsTextarea.value.split('\n').filter(k => k.trim() !== ''),
-        };
+            removeSuggested: removeSuggestedCheckbox.checked
+          };
         chrome.storage.sync.set(settings, function() {
             statusDiv.textContent = 'Changes saved!';
             setTimeout(() => { statusDiv.textContent = ''; }, 2000);
