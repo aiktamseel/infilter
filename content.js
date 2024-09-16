@@ -75,7 +75,9 @@ function removePosts() {
 
 
 // Run main post check and remove function
-removePosts()
+if (window.location.href.includes('linkedin.com/feed')) {
+    removePosts()
+}
 
 // Re-run main function when message received
 chrome.runtime.onMessage.addListener((message) => {

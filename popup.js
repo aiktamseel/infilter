@@ -23,7 +23,9 @@ document.addEventListener('DOMContentLoaded', function() {
         // Send removePosts message
         chrome.tabs.query({ active: true, currentWindow: true }, function(tabs) {
             var activeTab = tabs[0];
-            chrome.tabs.sendMessage(activeTab.id, { action: "removePosts" });
+            if (activeTab && activeTab.url && activeTab.url.includes('linkedin.com/feed')) {
+              chrome.tabs.sendMessage(activeTab.id, { action: "removePosts" });
+            }
         });
       });
     });

@@ -1,7 +1,7 @@
 {
     "manifest_version": 3,
     "name": "inFilter",
-    "version": "1.2.0",
+    "version": "1.2.1",
     "icons": {
       "48": "icon48.png",
       "128": "icon128.png"
@@ -18,7 +18,7 @@
     },
     "content_scripts": [
       {
-        "matches": ["*://*.linkedin.com/feed/"],
+        "matches": ["*://*.linkedin.com/*"],
         "js": ["content.js"]
       }
     ],
