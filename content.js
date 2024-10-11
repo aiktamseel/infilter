@@ -5,7 +5,7 @@ let removeSuggested;
 
 // Set element selectors
 const SELECTORS = {
-    post: 'div:has(> div#fie-impression-container)',
+    post: 'div:has(> div.fie-impression-container)',
     content: 'div.feed-shared-update-v2__description-wrapper',
     header: 'div.relative',
     feed: 'main.scaffold-layout__main > div.relative'
