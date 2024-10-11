@@ -75,12 +75,12 @@ function removePosts() {
     });
     
     // Cleaner UI
-    window.onload = function() {
+    setTimeout(function() {
         //Remove Ad iframe
         document.querySelector(SELECTORS.ad_iframe).remove();
         // Make footer un-sticky
         document.querySelector(SELECTORS.sticky).className = "";
-    };
+    }, 4000);
 
 }
 
