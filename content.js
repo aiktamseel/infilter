@@ -8,7 +8,9 @@ const SELECTORS = {
     post: 'div:has(> div.fie-impression-container)',
     content: 'div.feed-shared-update-v2__description-wrapper',
     header: 'div.relative',
-    feed: 'main.scaffold-layout__main > div.relative'
+    feed: 'main.scaffold-layout__main > div.relative',
+    ad_iframe: 'section.ad-banner-container',
+    sticky: 'div.scaffold-layout__sticky.scaffold-layout__sticky--is-active.scaffold-layout__sticky--lg'
 };
 
 // Check if post meets removal criteria
@@ -71,6 +73,15 @@ function removePosts() {
         const config = { childList: true, subtree: true };
         observer.observe(document.querySelector(SELECTORS.feed), config);
     });
+    
+    // Cleaner UI
+    window.onload = function() {
+        //Remove Ad iframe
+        document.querySelector(SELECTORS.ad_iframe).remove();
+        // Make footer un-sticky
+        document.querySelector(SELECTORS.sticky).className = "";
+    };
+
 }
 
 
