@@ -1,7 +1,7 @@
 {
     "manifest_version": 3,
     "name": "inFilter",
-    "version": "1.2.2",
+    "version": "1.2.3",
     "icons": {
       "48": "icon48.png",
       "128": "icon128.png"

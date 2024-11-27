@@ -8,7 +8,7 @@ const SELECTORS = {
     post: 'div:has(> div.fie-impression-container)',
     content: 'div.feed-shared-update-v2__description-wrapper',
     header: 'div.relative',
-    feed: 'main.scaffold-layout__main > div.relative',
+    feed: 'div.scaffold-finite-scroll__content',
     ad_iframe: 'section.ad-banner-container',
     sticky: 'div.scaffold-layout__sticky.scaffold-layout__sticky--is-active.scaffold-layout__sticky--lg'
 };
@@ -77,7 +77,7 @@ function removePosts() {
     // Cleaner UI
     setTimeout(function() {
         //Remove Ad iframe
-        document.querySelector(SELECTORS.ad_iframe).remove();
+        document.querySelector(SELECTORS.ad_iframe)?.remove();
         // Make footer un-sticky
         document.querySelector(SELECTORS.sticky).className = "";
     }, 4000);
