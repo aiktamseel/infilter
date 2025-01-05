@@ -10,7 +10,16 @@ const SELECTORS = {
     header: 'div.relative',
     feed: 'div.scaffold-finite-scroll__content',
     ad_iframe: 'section.ad-banner-container',
-    sticky: 'div.scaffold-layout__sticky.scaffold-layout__sticky--is-active.scaffold-layout__sticky--lg'
+    sticky: 'div.scaffold-layout__sticky.scaffold-layout__sticky--is-active.scaffold-layout__sticky--lg',
+    chatOuter: '#messaging > div > div',
+    chatAside: '#messaging > div > div > aside',
+    chatFilter: 'div.msg-conversations-container__title-row',
+    chatColumn: 'div.scaffold-layout__detail.msg__detail',
+    chatBubble: 'body > div.application-outlet > div.application-outlet__overlay-container',
+    chatForm: 'form.msg-form',
+    chatTopbar: '#main > div > div:nth-child(1)',
+    chatRecent: 'div.msg-conversations-container__header.relative',
+    chatTitle: 'div.msg-cross-pillar-inbox-top-bar-wrapper__container > div > h1'
 };
 
 // Check if post meets removal criteria
@@ -84,15 +93,49 @@ function removePosts() {
 
 }
 
+function tidyChat() {
+    console.log("Tidy Run")
+
+    Object.assign(document.querySelector(SELECTORS.chatOuter).style, {
+        gridTemplateColumns : '1fr 0',
+        marginTop: '0',
+        maxHeight: '100vh'
+      });
+
+    document.querySelector(SELECTORS.chatAside).style.display = 'none';
+    document.querySelector(SELECTORS.chatFilter).style.display = 'none';
+    document.querySelector(SELECTORS.chatBubble).style.display = 'none';
+    document.querySelector(SELECTORS.chatColumn).style.flex = '6';
+    document.querySelector(SELECTORS.chatForm).style.height = '180px';
+
+    const sourceElement = document.querySelector(SELECTORS.chatTopbar);
+    const targetElement = document.querySelector(SELECTORS.chatRecent);
+    targetElement.parentNode.insertBefore(sourceElement, targetElement);
+
+    document.querySelector(SELECTORS.chatTitle).style.display = 'none';
+   
+}
+
 
 // Run main post check and remove function
 if (window.location.href.includes('linkedin.com/feed')) {
     removePosts()
 }
 
+// Clean chat on Messaging page
+window.addEventListener('load', () => {
+    if (window.location.href.includes('linkedin.com/messaging')) {
+        setTimeout(tidyChat, 9000);
+    }
+});
+
+
 // Re-run main function when message received
 chrome.runtime.onMessage.addListener((message) => {
     if (message.action === 'removePosts') {
         removePosts();
+    }
+    else if (message.action === 'tidyChat') {
+        tidyChat();
     }
 });
