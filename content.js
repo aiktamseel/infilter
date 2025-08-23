@@ -6,11 +6,19 @@ let removeSuggested;
 // Set element selectors
 const SELECTORS = {
     post: 'div:has(> div.fie-impression-container)',
-    content: 'div.feed-shared-update-v2__description-wrapper',
+    content: 'div.feed-shared-update-v2__description',
     header: 'div.relative',
     feed: 'div.scaffold-finite-scroll__content',
-    ad_iframe: 'section.ad-banner-container',
-    sticky: 'div.scaffold-layout__sticky.scaffold-layout__sticky--is-active.scaffold-layout__sticky--lg',
+    dropdownbtn: 'div:has(> [aria-label="Sort order dropdown button"])',
+    dropdownoptions: '.artdeco-dropdown__item',
+    rightpanel: 'aside.scaffold-layout__aside',
+    leftpanel: 'aside.scaffold-layout__sidebar',
+    logo: '.global-nav__branding-logo',
+    forbusiness: 'div.global-nav__app-launcher-menu',
+    premium: 'div.premium-upsell-link',
+    premium2: 'a.global-nav__secondary-premium-anchor',
+    profilebutton: 'button.global-nav__primary-link-me-menu-trigger', //#ember15
+    profilemenu: 'div.global-nav__me-content > div > ul > li:nth-child(2) > ul',
     chatOuter: '#messaging > div > div',
     chatAside: '#messaging > div > div > aside',
     chatFilter: 'div.msg-conversations-container__title-row',
@@ -47,6 +55,24 @@ function checkPost(post) {
 
 // Dynamically remove all posts returning true checkPost()
 function removePosts() {
+    // Switch to Recent
+    function switchToRecent() {
+        const sortButton = document.querySelector(SELECTORS.dropdownbtn);
+        if (!sortButton) return setTimeout(switchToRecent, 100);
+        
+        sortButton.click();
+        
+        function waitForDropdown() {
+            const dropdown = document.querySelector(SELECTORS.dropdownoptions);
+            if (!dropdown) return setTimeout(waitForDropdown, 100);
+            document.querySelectorAll(SELECTORS.dropdownoptions)[1].click();
+        }
+        
+        setTimeout(waitForDropdown, 100);
+    }
+    switchToRecent();
+
+
     console.log("inFilter: Check all posts")
     chrome.storage.sync.get(['keywords', 'removeSuggested'], function(data) {
         keywords = (data.keywords || []).map(str => str.toLowerCase());
@@ -84,12 +110,54 @@ function removePosts() {
     });
     
     // Cleaner UI
-    setTimeout(function() {
-        //Remove Ad iframe
-        document.querySelector(SELECTORS.ad_iframe)?.remove();
-        // Make footer un-sticky
-        document.querySelector(SELECTORS.sticky).className = "";
-    }, 4000);
+    const style = document.createElement('style');
+    style.textContent = ['rightpanel', 'leftpanel', 'logo', 'forbusiness', 'premium']
+        .map(key => SELECTORS[key])
+        .join(', ') + ' { visibility: hidden !important; }';
+    document.head.appendChild(style);
+
+    //Add buttons to Profile Menu
+    const profileButton = document.querySelector(SELECTORS.profilebutton);
+
+    if (profileButton && !profileButton.hasAttribute('data-menu-handler')) {
+        profileButton.setAttribute('data-menu-handler', 'true');
+        
+        profileButton.addEventListener('click', function() {
+            function addMenuItems() {
+                setTimeout(() => {
+                    const profileMenu = document.querySelector(SELECTORS.profilemenu);
+                    if (!profileMenu) {
+                        addMenuItems();
+                        return;
+                    }
+                    
+                    const items = [
+                        { text: 'Saved items', href: 'https://www.linkedin.com/my-items/' },
+                        { text: 'Groups', href: 'https://www.linkedin.com/groups' },
+                        { text: 'Newsletter', href: 'https://www.linkedin.com/mynetwork/network-manager/newsletters' },
+                        { text: 'Events', href: 'https://www.linkedin.com/events' }
+                    ];
+                    
+                    items.reverse().forEach(item => {
+                        const li = document.createElement('li');
+                        const a = document.createElement('a');
+                        a.textContent = item.text;
+                        a.href = item.href;
+                        a.className = 'global-nav__secondary-link';
+                        li.appendChild(a);
+                        profileMenu.insertBefore(li, profileMenu.firstChild);
+                    });
+
+                    // Remove Premium button
+                    document.querySelector(SELECTORS.premium2).remove();
+
+                }, 100);
+            }
+            
+            addMenuItems();
+        });
+    }
+
 
 }
 
@@ -125,7 +193,7 @@ if (window.location.href.includes('linkedin.com/feed')) {
 // Clean chat on Messaging page
 window.addEventListener('load', () => {
     if (window.location.href.includes('linkedin.com/messaging')) {
-        setTimeout(tidyChat, 9000);
+        setTimeout(tidyChat, 1000);
     }
 });
 
@@ -133,9 +201,11 @@ window.addEventListener('load', () => {
 // Re-run main function when message received
 chrome.runtime.onMessage.addListener((message) => {
     if (message.action === 'removePosts') {
+        console.log("Remove post message recieved")
         removePosts();
     }
     else if (message.action === 'tidyChat') {
+        console.log("Tidy chat message recieved")
         tidyChat();
     }
 });
