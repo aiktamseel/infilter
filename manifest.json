@@ -6,7 +6,7 @@
       "48": "icon48.png",
       "128": "icon128.png"
     },
-    "description": "Block ads and remove posts with specified keywords from your LinkedIn feed.",
+    "description": "Declutter your LinkedIn feed by removing unwanted posts and cleaner UI.",
     "permissions": [
       "storage"
     ],
