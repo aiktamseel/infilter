@@ -3,11 +3,13 @@ document.addEventListener('DOMContentLoaded', function() {
     const removeSuggestedCheckbox = document.getElementById('removeSuggested');
     const saveButton = document.getElementById('saveKeywords');
     const statusDiv = document.getElementById('status');
+    const postCountSpan = document.getElementById('postCount');
   
     // Load saved settings
-    chrome.storage.sync.get(['keywords', 'removeSuggested'], function(data) {
+    chrome.storage.sync.get(['keywords', 'removeSuggested', 'totalPostsRemoved'], function(data) {
         keywordsTextarea.value = (data.keywords || []).join('\n');
         removeSuggestedCheckbox.checked = data.removeSuggested || false;
+        postCountSpan.textContent = data.totalPostsRemoved || 0;
     });
   
     // Save settings
@@ -20,11 +22,11 @@ document.addEventListener('DOMContentLoaded', function() {
             statusDiv.textContent = 'Changes saved!';
             setTimeout(() => { statusDiv.textContent = ''; }, 2000);
 
-        // Send removePosts message
+        // Send cleanHomePage message
         chrome.tabs.query({ active: true, currentWindow: true }, function(tabs) {
             var activeTab = tabs[0];
             if (activeTab && activeTab.url && activeTab.url.includes('linkedin.com/feed')) {
-              chrome.tabs.sendMessage(activeTab.id, { action: "removePosts" });
+              chrome.tabs.sendMessage(activeTab.id, { action: "inFilter" });
             }
         });
       });
