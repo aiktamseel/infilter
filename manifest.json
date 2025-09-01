@@ -1,12 +1,12 @@
 {
     "manifest_version": 3,
     "name": "inFilter - Linkedin UI Cleaner",
-    "version": "2.1.0",
+    "version": "2.2.0",
     "icons": {
       "48": "icon48.png",
       "128": "icon128.png"
     },
-    "description": "Declutter your LinkedIn feed by removing unwanted posts and cleaner UI.",
+    "description": "Declutter LinkedIn by removing unwanted posts and applying cleaner UI.",
     "permissions": [
       "storage"
     ],
