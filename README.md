@@ -1,12 +1,13 @@
 # inFilter
-Block ads and remove posts with certain keywords from your **Linkedin feed**.  
+Declutter **LinkedIn** by removing unwanted posts and applying cleaner UI.  
 **[Install](https://chromewebstore.google.com/detail/infilter/lmlhegmkjkkeigpmgfgbdfdgpcocapeg) from Chrome Web Store** *(Recommended)*.
 
 
 ## Features
-- Auto remove *Promoted Posts*
-- Auto remove *Recommended for you* items 
-- Remove posts that contain keywords specified by user
+- Provide a cleaner Linkedin UI
+- Remove ads and posts containing any of the keywords specified by you
+- Option to remove "Suggested Posts" and "Recommended for you" items
+- Auto sort feed by "Recent"
 
 
 
