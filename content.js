@@ -2,7 +2,7 @@ const SELECTORS = {
     post: 'div:has(> div.fie-impression-container)',
     content: 'div.feed-shared-update-v2__description',
     header: 'div.relative',
-    feed: 'div.scaffold-finite-scroll__content',
+    feed: 'div.scaffold-finite-scroll--finite',
     postTextBox: '.share-box-feed-entry__top-bar > button',
     postTextField: '.ql-editor',
     postButton: 'button.share-actions__primary-action',
